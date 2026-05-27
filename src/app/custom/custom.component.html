@@ -1,0 +1,209 @@
+<main class="builder-page">
+  <section class="hero" aria-label="Pizza builder introduction">
+    <div class="hero-copy">
+      <p class="eyebrow">Made to order / Fired hot</p>
+      <h1>Craft your perfect pizza</h1>
+      <p class="hero-description">
+        Pick a size, layer on fresh toppings, and watch your signature pie come together.
+      </p>
+      <div class="service-tags" aria-label="Service highlights">
+        <span>Hand-stretched dough</span>
+        <span>20-25 min delivery</span>
+        <span>Free delivery over ₹999</span>
+      </div>
+    </div>
+    <div class="hero-special">
+      <p class="special-label">Chef's tip</p>
+      <p>Finish with hot honey and basil for the perfect sweet heat.</p>
+    </div>
+  </section>
+
+  <form class="builder-grid" (submit)="addToOrder($event)">
+    <section class="controls-card" aria-label="Customize your pizza">
+      <div class="card-heading">
+        <div>
+          <p class="eyebrow">Build your own</p>
+          <h2>Choose your layers</h2>
+        </div>
+        <button class="reset-button" type="button" (click)="resetPizza()">Reset</button>
+      </div>
+
+      <fieldset class="choice-section">
+        <legend><span>1</span> Select a size</legend>
+        <div class="size-options">
+          <label class="size-card" *ngFor="let size of sizes; trackBy: trackById" [class.selected]="selectedSizeId === size.id">
+            <input
+              class="native-input"
+              type="radio"
+              name="pizza-size"
+              [value]="size.id"
+              [checked]="selectedSizeId === size.id"
+              (change)="selectSize(size.id)"
+            >
+            <span class="size-name">{{ size.name }}</span>
+            <span class="size-meta">{{ size.diameter }} / {{ size.slices }} slices</span>
+            <span class="size-note">{{ size.description }}</span>
+            <strong>{{ size.price | currency:'INR':'symbol':'1.0-0' }}</strong>
+          </label>
+        </div>
+      </fieldset>
+
+      <div class="layer-grid">
+        <fieldset class="choice-section compact-section">
+          <legend><span>2</span> Pick a crust</legend>
+          <label class="option-row" *ngFor="let crust of crusts; trackBy: trackById" [class.selected]="selectedCrustId === crust.id">
+            <input
+              type="radio"
+              name="crust"
+              [checked]="selectedCrustId === crust.id"
+              (change)="selectCrust(crust.id)"
+            >
+            <span>
+              <strong>{{ crust.name }}</strong>
+              <small>{{ crust.description }}</small>
+            </span>
+            <b>{{ crust.price ? ('+' + (crust.price | currency:'INR':'symbol':'1.0-0')) : 'Included' }}</b>
+          </label>
+        </fieldset>
+
+        <fieldset class="choice-section compact-section">
+          <legend><span>3</span> Sauce and cheese</legend>
+          <p class="mini-label">Sauce</p>
+          <label class="option-row" *ngFor="let sauce of sauces; trackBy: trackById" [class.selected]="selectedSauceId === sauce.id">
+            <input
+              type="radio"
+              name="sauce"
+              [checked]="selectedSauceId === sauce.id"
+              (change)="selectSauce(sauce.id)"
+            >
+            <span><strong>{{ sauce.name }}</strong></span>
+            <b>{{ sauce.price ? ('+' + (sauce.price | currency:'INR':'symbol':'1.0-0')) : 'Included' }}</b>
+          </label>
+          <p class="mini-label cheese-label">Cheese</p>
+          <label class="option-row" *ngFor="let cheese of cheeses; trackBy: trackById" [class.selected]="selectedCheeseId === cheese.id">
+            <input
+              type="radio"
+              name="cheese"
+              [checked]="selectedCheeseId === cheese.id"
+              (change)="selectCheese(cheese.id)"
+            >
+            <span><strong>{{ cheese.name }}</strong></span>
+            <b>{{ cheese.price ? ('+' + (cheese.price | currency:'INR':'symbol':'1.0-0')) : 'Included' }}</b>
+          </label>
+        </fieldset>
+      </div>
+
+      <fieldset class="choice-section toppings-section">
+        <legend><span>4</span> Add toppings</legend>
+        <div class="category-tabs" aria-label="Filter toppings">
+          <button
+            *ngFor="let category of toppingCategories; trackBy: trackById"
+            type="button"
+            [class.active]="activeCategory === category.id"
+            [attr.aria-pressed]="activeCategory === category.id"
+            (click)="filterToppings(category.id)"
+          >{{ category.label }}</button>
+        </div>
+        <div class="toppings-grid">
+          <label
+            class="topping-card"
+            *ngFor="let topping of filteredToppings; trackBy: trackById"
+            [class.selected]="isToppingSelected(topping.id)"
+          >
+            <input
+              class="native-input"
+              type="checkbox"
+              [checked]="isToppingSelected(topping.id)"
+              (change)="setTopping(topping.id, $event)"
+            >
+            <span class="topping-mark" [class]="'topping-mark ' + topping.id" aria-hidden="true"></span>
+            <span class="topping-text">
+              <strong>{{ topping.name }}</strong>
+              <small>{{ topping.description }}</small>
+            </span>
+            <b>+{{ topping.price | currency:'INR':'symbol':'1.0-0' }}</b>
+          </label>
+        </div>
+      </fieldset>
+    </section>
+
+    <aside class="preview-column" aria-label="Your pizza preview and order summary">
+      <section class="preview-card">
+        <div class="preview-heading">
+          <div>
+            <p class="eyebrow">Live preview</p>
+            <h2>Your creation</h2>
+          </div>
+          <span class="size-pill">{{ selectedSize.diameter }}</span>
+        </div>
+        <div class="pizza-board">
+          <div
+            class="pizza-art"
+            [class.thin-crust]="selectedCrustId === 'thin'"
+            [class.stuffed-crust]="selectedCrustId === 'stuffed'"
+            [class.white-sauce]="selectedSauceId === 'garlic'"
+            [class.bbq-sauce]="selectedSauceId === 'smoky'"
+            [class.triple-cheese]="selectedCheeseId === 'triple'"
+            [class.plant-cheese]="selectedCheeseId === 'plant'"
+            role="img"
+            [attr.aria-label]="previewDescription"
+          >
+            <div class="pizza-cheese"></div>
+            <ng-container *ngFor="let topping of selectedToppings; trackBy: trackById">
+              <span
+                *ngFor="let piece of toppingPieces; trackBy: trackByValue"
+                class="topping-piece"
+                [ngClass]="['pizza-' + topping.id, 'piece-' + piece]"
+              ></span>
+            </ng-container>
+          </div>
+        </div>
+        <div class="selected-flavors">
+          <span>{{ selectedSauce.name }}</span>
+          <span>{{ selectedCheese.name }}</span>
+          <span *ngFor="let topping of selectedToppings; trackBy: trackById">{{ topping.name }}</span>
+        </div>
+      </section>
+
+      <section class="summary-card" aria-label="Price summary">
+        <div class="summary-heading">
+          <div>
+            <p class="eyebrow">Your order</p>
+            <h2>{{ selectedSize.name }} pizza</h2>
+          </div>
+          <div class="quantity" aria-label="Pizza quantity">
+            <button type="button" (click)="decreaseQuantity()" [disabled]="quantity === 1" aria-label="Decrease quantity">-</button>
+            <span aria-live="polite">{{ quantity }}</span>
+            <button type="button" (click)="increaseQuantity()" [disabled]="quantity === 10" aria-label="Increase quantity">+</button>
+          </div>
+        </div>
+
+        <dl class="receipt">
+          <div><dt>{{ selectedSize.name }} / {{ selectedCrust.name }}</dt><dd>{{ (selectedSize.price + selectedCrust.price) | currency:'INR':'symbol':'1.0-0' }}</dd></div>
+          <div><dt>{{ selectedSauce.name }} / {{ selectedCheese.name }}</dt><dd>{{ (selectedSauce.price + selectedCheese.price) | currency:'INR':'symbol':'1.0-0' }}</dd></div>
+          <div><dt>Toppings ({{ selectedToppings.length }})</dt><dd>{{ toppingsTotal | currency:'INR':'symbol':'1.0-0' }}</dd></div>
+          <div *ngIf="quantity > 1"><dt>{{ quantity }} pizzas</dt><dd>{{ subtotal | currency:'INR':'symbol':'1.0-0' }}</dd></div>
+          <div><dt>Delivery estimate</dt><dd [class.free]="deliveryFee === 0">{{ deliveryFee ? (deliveryFee | currency:'INR':'symbol':'1.0-0') : 'FREE' }}</dd></div>
+          <div class="total"><dt>Estimated total</dt><dd aria-live="polite">{{ total | currency:'INR':'symbol':'1.0-0' }}</dd></div>
+        </dl>
+
+        <p class="delivery-note" *ngIf="amountUntilFreeDelivery > 0">
+          Add {{ amountUntilFreeDelivery | currency:'INR':'symbol':'1.0-0' }} more for free delivery.
+        </p>
+        <p class="delivery-note achieved" *ngIf="amountUntilFreeDelivery === 0">
+          Free delivery unlocked.
+        </p>
+
+        <button class="order-button" type="submit">
+          Add to basket
+          <span>{{ subtotal | currency:'INR':'symbol':'1.0-0' }}</span>
+        </button>
+        <div class="confirmation" *ngIf="orderPlaced" role="status">
+          <strong>Added to your basket!</strong>
+          <span>Freshly fired and ready in 20-25 minutes.</span>
+        </div>
+        <p class="sr-only" aria-live="polite">{{ announcement }}</p>
+      </section>
+    </aside>
+  </form>
+</main>

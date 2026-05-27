@@ -1,0 +1,98 @@
+<header class="site-header">
+  <a class="brand" routerLink="/home" (click)="closeMenu()" aria-label="Pizza Paradise home">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <span>
+      <strong>Pizza Paradise</strong>
+      <small>Kitchen &amp; Oven</small>
+    </span>
+  </a>
+
+  <nav id="site-navigation" class="site-nav" [class.open]="menuOpen" aria-label="Main navigation">
+    <a routerLink="/home" routerLinkActive="active" (click)="closeMenu()">Home</a>
+    <a routerLink="/about" routerLinkActive="active" (click)="closeMenu()">Our Story</a>
+    <a routerLink="/index" routerLinkActive="active" (click)="closeMenu()">Menu</a>
+    <a class="builder-link" routerLink="/custom" routerLinkActive="active" (click)="closeMenu()">Build a Pizza</a>
+  </nav>
+
+  <div class="header-actions">
+    <button class="cart-trigger" type="button" (click)="openCart()" aria-label="Open your basket">
+      <span class="bag-icon" aria-hidden="true"></span>
+      <span class="cart-label">Basket</span>
+      <span class="cart-count" *ngIf="cart.itemCount()">{{ cart.itemCount() }}</span>
+    </button>
+    <button
+      class="menu-trigger"
+      type="button"
+      [class.open]="menuOpen"
+      [attr.aria-expanded]="menuOpen"
+      aria-controls="site-navigation"
+      aria-label="Toggle navigation menu"
+      (click)="toggleMenu()"
+    >
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-nav-backdrop" *ngIf="menuOpen" (click)="closeMenu()" aria-hidden="true"></div>
+<div class="drawer-backdrop" *ngIf="cart.drawerOpen()" (click)="cart.closeDrawer()" aria-hidden="true"></div>
+<aside
+  class="cart-drawer"
+  [class.open]="cart.drawerOpen()"
+  role="dialog"
+  aria-label="Your basket"
+  [attr.aria-modal]="cart.drawerOpen() ? 'true' : null"
+  [attr.aria-hidden]="!cart.drawerOpen()"
+>
+  <div class="drawer-header">
+    <div>
+      <p>Your order</p>
+      <h2>Basket <span *ngIf="cart.itemCount()">({{ cart.itemCount() }})</span></h2>
+    </div>
+    <button type="button" (click)="cart.closeDrawer()" aria-label="Close basket">x</button>
+  </div>
+
+  <div class="empty-cart" *ngIf="!cart.items().length">
+    <span class="empty-pizza" aria-hidden="true"></span>
+    <h3>Your basket is empty</h3>
+    <p>Choose a signature pizza or build your own fresh favourite.</p>
+    <a routerLink="/index" (click)="cart.closeDrawer()">Browse menu</a>
+  </div>
+
+  <ng-container *ngIf="cart.items().length">
+    <div class="cart-lines">
+      <article class="cart-line" *ngFor="let item of cart.items(); trackBy: trackById">
+        <img *ngIf="item.image; else customMark" [src]="item.image" [alt]="item.name" width="62" height="62">
+        <ng-template #customMark><span class="custom-pizza" aria-hidden="true"></span></ng-template>
+        <div class="line-details">
+          <span class="line-type">{{ item.kind === 'custom' ? 'Custom build' : 'Menu' }}</span>
+          <h3>{{ item.name }}</h3>
+          <p>{{ item.description }}</p>
+          <strong>{{ item.unitPrice | currency:'INR':'symbol':'1.0-0' }}</strong>
+        </div>
+        <div class="line-actions">
+          <div class="line-quantity" aria-label="Update quantity">
+            <button type="button" (click)="decrementItem(item.id, item.quantity)" [attr.aria-label]="'Decrease ' + item.name">-</button>
+            <span>{{ item.quantity }}</span>
+            <button type="button" (click)="incrementItem(item.id, item.quantity)" [disabled]="item.quantity === 10" [attr.aria-label]="'Increase ' + item.name">+</button>
+          </div>
+          <button class="remove" type="button" (click)="cart.removeItem(item.id)">Remove</button>
+        </div>
+      </article>
+    </div>
+    <div class="cart-bill">
+      <div><span>Subtotal</span><strong>{{ cart.subtotal() | currency:'INR':'symbol':'1.0-0' }}</strong></div>
+      <div><span>Delivery</span><strong [class.free]="cart.deliveryFee() === 0">{{ cart.deliveryFee() ? (cart.deliveryFee() | currency:'INR':'symbol':'1.0-0') : 'FREE' }}</strong></div>
+      <div class="grand-total"><span>Total</span><strong>{{ cart.total() | currency:'INR':'symbol':'1.0-0' }}</strong></div>
+      <p *ngIf="cart.subtotal() < 999">Add {{ 999 - cart.subtotal() | currency:'INR':'symbol':'1.0-0' }} more for free delivery.</p>
+      <button class="checkout" *ngIf="!cart.orderConfirmed()" type="button" (click)="cart.confirmOrder()">Place order</button>
+      <div class="order-confirmed" *ngIf="cart.orderConfirmed()" role="status">
+        <strong>Order received!</strong>
+        <span>Your pizzas are being prepared. Estimated arrival: 20-25 min.</span>
+        <button type="button" (click)="cart.clear()">Start a new order</button>
+      </div>
+    </div>
+  </ng-container>
+</aside>
+
+<router-outlet></router-outlet>

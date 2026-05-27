@@ -1,0 +1,16 @@
+html {
+  min-width: 320px;
+  background: #fff8ef;
+}
+
+body {
+  margin: 0;
+  color: #35231b;
+  font-family: "Segoe UI", "Trebuchet MS", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input {
+  font: inherit;
+}

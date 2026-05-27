@@ -1,0 +1,384 @@
+:host {
+  display: block;
+  color: #342219;
+  font-family: "Segoe UI", "Trebuchet MS", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.home-page {
+  padding: 108px clamp(15px, 5vw, 64px) 54px;
+  background:
+    radial-gradient(circle at 0 8%, rgba(236, 160, 64, .2), transparent 29%),
+    #fff9f0;
+}
+
+.home-hero {
+  display: grid;
+  grid-template-columns: minmax(420px, 1fr) minmax(330px, 475px);
+  gap: clamp(30px, 6vw, 82px);
+  align-items: center;
+  max-width: 1190px;
+  min-height: calc(100vh - 135px);
+  margin: 0 auto 62px;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #c24828;
+  font-size: .71rem;
+  font-weight: 800;
+  letter-spacing: .19em;
+  text-transform: uppercase;
+}
+
+.hero-copy h1 {
+  max-width: 610px;
+  margin: 11px 0 18px;
+  color: #291811;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(3rem, 6vw, 5.1rem);
+  letter-spacing: -.075em;
+  line-height: .98;
+}
+
+.hero-copy > p:not(.eyebrow) {
+  max-width: 535px;
+  margin: 0 0 30px;
+  color: #70574a;
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 43px;
+}
+
+.hero-actions a {
+  border-radius: 999px;
+  padding: 15px 26px;
+  font-size: .91rem;
+  font-weight: 750;
+  text-decoration: none;
+  transition: transform .18s ease;
+}
+
+.hero-actions a:hover {
+  transform: translateY(-2px);
+}
+
+.hero-actions .primary {
+  background: #cb4927;
+  color: #fff;
+  box-shadow: 0 11px 20px rgba(203, 73, 39, .22);
+}
+
+.hero-actions .secondary {
+  border: 1px solid #e4c9b3;
+  color: #4b3429;
+}
+
+.quick-facts {
+  display: flex;
+  gap: clamp(16px, 4vw, 38px);
+}
+
+.quick-facts span {
+  color: #795f51;
+  font-size: .77rem;
+}
+
+.quick-facts strong {
+  display: block;
+  margin-bottom: 5px;
+  color: #35231b;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.35rem;
+}
+
+.hero-photo {
+  position: relative;
+  margin: 0;
+}
+
+.hero-photo img {
+  display: block;
+  width: 100%;
+  height: min(68vh, 585px);
+  border-radius: 32px;
+  object-fit: cover;
+  box-shadow: 0 25px 42px rgba(72, 37, 21, .18);
+}
+
+.hero-photo figcaption {
+  position: absolute;
+  right: -19px;
+  bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 17px;
+  padding: 16px 20px;
+  background: #fffdf9;
+  box-shadow: 0 12px 27px rgba(71, 36, 20, .14);
+}
+
+.hero-photo strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.08rem;
+}
+
+.hero-photo span {
+  margin-top: 5px;
+  color: #895f4c;
+  font-size: .75rem;
+}
+
+.craft-section,
+.history,
+.favourites {
+  max-width: 1190px;
+  margin: 0 auto;
+}
+
+.craft-section {
+  border-radius: 28px;
+  padding: clamp(25px, 4vw, 38px);
+  background: #39251d;
+  color: #fff7eb;
+}
+
+.craft-section h2,
+.history h2,
+.section-heading h2 {
+  margin: 7px 0 26px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.9rem, 3.3vw, 2.6rem);
+  letter-spacing: -.055em;
+  line-height: 1.12;
+}
+
+.craft-section .eyebrow {
+  color: #efa560;
+}
+
+.craft-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.craft-cards article {
+  border-radius: 18px;
+  padding: 23px;
+  background: rgba(255, 250, 240, .08);
+}
+
+.craft-cards span {
+  color: #eca15b;
+  font-size: .72rem;
+  font-weight: 800;
+}
+
+.craft-cards h3 {
+  margin: 13px 0 9px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.2rem;
+}
+
+.craft-cards p {
+  margin: 0;
+  color: #e3d3c3;
+  font-size: .84rem;
+  line-height: 1.55;
+}
+
+.history {
+  display: grid;
+  grid-template-columns: 1fr .86fr;
+  gap: clamp(28px, 6vw, 70px);
+  align-items: center;
+  padding: clamp(54px, 8vw, 88px) 0;
+}
+
+.history h2 {
+  margin-bottom: 19px;
+}
+
+.history-copy > p:not(.eyebrow) {
+  margin: 0 0 16px;
+  color: #70584b;
+  font-size: .94rem;
+  line-height: 1.7;
+}
+
+.history-copy a,
+.section-heading a {
+  display: inline-block;
+  margin-top: 12px;
+  color: #bd4324;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.history-images {
+  position: relative;
+  min-height: 480px;
+}
+
+.history-images img:first-child {
+  width: 76%;
+  height: 440px;
+  border-radius: 26px;
+  object-fit: cover;
+}
+
+.history-images img:last-child {
+  position: absolute;
+  right: 0;
+  bottom: 8px;
+  width: 54%;
+  height: 215px;
+  border: 7px solid #fff9f0;
+  border-radius: 22px;
+  object-fit: cover;
+}
+
+.favourites {
+  padding-bottom: 16px;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 23px;
+}
+
+.section-heading h2 {
+  margin-bottom: 0;
+}
+
+.favourite-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 17px;
+}
+
+.favourite-grid article {
+  overflow: hidden;
+  border: 1px solid #edddce;
+  border-radius: 20px;
+  background: #fff;
+}
+
+.favourite-grid img {
+  display: block;
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+}
+
+.favourite-grid div {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 18px 18px;
+}
+
+.favourite-grid strong {
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.favourite-grid span {
+  color: #bd4324;
+  font-weight: 750;
+}
+
+a:focus-visible {
+  outline: 3px solid #263850;
+  outline-offset: 3px;
+}
+
+@media (max-width: 860px) {
+  .home-hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .hero-photo {
+    max-width: 580px;
+  }
+
+  .history {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 650px) {
+  .home-page {
+    padding: 94px 13px 34px;
+  }
+
+  .home-hero {
+    gap: 31px;
+    margin-bottom: 35px;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(2.55rem, 13vw, 3.25rem);
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    margin-bottom: 31px;
+  }
+
+  .hero-actions a {
+    text-align: center;
+  }
+
+  .hero-photo img {
+    height: 108vw;
+    max-height: 455px;
+    border-radius: 23px;
+  }
+
+  .hero-photo figcaption {
+    right: 13px;
+    bottom: 14px;
+  }
+
+  .craft-cards,
+  .favourite-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .history {
+    padding: 53px 0;
+  }
+
+  .history-images {
+    min-height: 363px;
+  }
+
+  .history-images img:first-child {
+    height: 350px;
+  }
+
+  .history-images img:last-child {
+    height: 154px;
+  }
+
+  .section-heading {
+    display: block;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 1ms !important;
+  }
+}

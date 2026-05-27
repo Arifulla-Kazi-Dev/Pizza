@@ -1,0 +1,68 @@
+<main class="menu-page" id="main-content">
+  <section class="menu-hero">
+    <div>
+      <p class="eyebrow">Fresh from the oven</p>
+      <h1>Choose a signature pizza</h1>
+      <p class="intro">House-made dough, generous toppings and fast delivery, prepared when you order.</p>
+    </div>
+    <a class="custom-link" routerLink="/custom">
+      Build your own
+      <span>Pick every topping</span>
+    </a>
+  </section>
+
+  <section class="menu-controls" aria-label="Find a pizza">
+    <label class="search-box">
+      <span class="sr-only">Search pizzas</span>
+      <span class="search-icon" aria-hidden="true"></span>
+      <input type="search" placeholder="Search pizzas or ingredients" [value]="searchTerm" (input)="search($event)">
+    </label>
+    <div class="filter-tabs" aria-label="Pizza types">
+      <button
+        *ngFor="let filter of filters; trackBy: trackById"
+        type="button"
+        [class.active]="activeFilter === filter.id"
+        [attr.aria-pressed]="activeFilter === filter.id"
+        (click)="filterBy(filter.id)"
+      >{{ filter.label }}</button>
+    </div>
+  </section>
+
+  <section class="pizza-grid" aria-label="Menu pizzas">
+    <article class="pizza-card" *ngFor="let pizza of filteredPizzas; trackBy: trackById">
+      <div class="photo-frame">
+        <img
+          [src]="pizza.image"
+          [alt]="pizza.name + ' pizza'"
+          loading="lazy"
+          decoding="async"
+          width="420"
+          height="270"
+        >
+        <span class="food-type" [class.non-veg]="pizza.type === 'non-veg'" [attr.aria-label]="pizza.type === 'veg' ? 'Vegetarian' : 'Non vegetarian'"></span>
+        <span class="badge" *ngIf="pizza.badge">{{ pizza.badge }}</span>
+      </div>
+      <div class="pizza-content">
+        <h2>{{ pizza.name }}</h2>
+        <p>{{ pizza.description }}</p>
+        <div class="pizza-action">
+          <strong>{{ pizza.price | currency:'INR':'symbol':'1.0-0' }}</strong>
+          <button type="button" (click)="addPizza(pizza)">Add</button>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <div class="no-results" *ngIf="!filteredPizzas.length">
+    <h2>No pizza found</h2>
+    <p>Try another ingredient or view all pizzas.</p>
+    <button type="button" (click)="filterBy('all')">View all</button>
+  </div>
+
+  <section class="menu-promises" aria-label="Ordering benefits">
+    <article><strong>20-25 min</strong><span>Typical delivery time</span></article>
+    <article><strong>Fresh dough</strong><span>Stretched after you order</span></article>
+    <article><strong>Free delivery</strong><span>On orders above ₹999</span></article>
+  </section>
+  <p class="sr-only" aria-live="polite">{{ announcement }}</p>
+</main>
